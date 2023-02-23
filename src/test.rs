@@ -13,18 +13,19 @@ fn get_client(env: &Env) -> TinyNFTClient {
 fn happy_path() {
     let env = Env::default();
     let client = get_client(&env);
-
     let user_1 = Address::random(&env);
     let user_2 = Address::random(&env);
     
-    // test initialization
+    // test init
     client.init(&user_1);
     assert_eq!(client.get_owner(), user_1);
-    // TODO: assert that no authorization was used here
 
+    // test transfer
     client.xfer(&user_2);
     assert_eq!(client.get_owner(), user_2);
-    // Assert that authorization from user1 was used here
+    // TODO: Assert that authorization from user1 was used here
+    // Why is the following an empty vector?
+    std::println!("authorizations {:?}", env.recorded_top_authorizations());
 }
 
 #[test]
@@ -32,7 +33,6 @@ fn happy_path() {
 fn no_init(){
     let env = Env::default();
     let client = get_client(&env);
-
     let user_1 = Address::random(&env);
     client.xfer(&user_1);
 }
@@ -42,9 +42,7 @@ fn no_init(){
 fn double_init(){
     let env = Env::default();
     let client = get_client(&env);
-
     let user_1 = Address::random(&env);
-
     client.init(&user_1);
     client.init(&user_1);
 }
