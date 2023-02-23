@@ -22,10 +22,9 @@ fn happy_path() {
 
     // test transfer
     client.xfer(&user_2);
+    // verify that authorization wes provided by the owner (user_1)
+    assert_eq!(env.recorded_top_authorizations()[0].0, user_1);
     assert_eq!(client.get_owner(), user_2);
-    // TODO: Assert that authorization from user1 was used here
-    // Why is the following an empty vector?
-    std::println!("authorizations {:?}", env.recorded_top_authorizations());
 }
 
 #[test]
