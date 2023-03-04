@@ -18,12 +18,16 @@ fn happy_path() {
     
     // test init
     client.init(&user_1);
+    // assert that no authorization was required for intialization
+    assert_eq!(env.recorded_top_authorizations().len(), 0);
+    // asset that intialization properly set ownership
     assert_eq!(client.get_owner(), user_1);
 
     // test transfer
     client.xfer(&user_2);
-    // verify that authorization wes provided by the owner (user_1)
+    // asset that authorization wes provided by the owner (user_1)
     assert_eq!(env.recorded_top_authorizations()[0].0, user_1);
+    // asset that ownership transferred succeffuly
     assert_eq!(client.get_owner(), user_2);
 }
 
